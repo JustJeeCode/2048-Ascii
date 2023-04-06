@@ -17,4 +17,4 @@ HOW TO PLAY:
 
 And [ENTER] to finalise your input.
 
-Thanks for checking our the project!
+Thanks for checking out the project!
