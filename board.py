@@ -116,142 +116,137 @@ class Board:
 
 		return self.moves		
 
-	# Up movement
-	def up(self):
+	# Movement in a direction
+	def move(self, direction):
+		self.direction = direction
 		
 		for i in range(1, 4):
+			if direction == 'up':
+				self.r = 3
+				self.c = 0
+			elif direction == 'down':
+				self.r = 0
+				self.c = 0
+			elif direction == 'left':
+				self.r = 0
+				self.c = 3
+			elif direction == 'right':
+				self.r = 0
+				self.c = 0
+
+			for row in self.grid:
+				for cell in self.grid[self.r]:
+
+					if direction == 'up':
+						if self.r == 0:
+							break
+						if self.grid[self.r-1][self.c] == 0:
+							self.grid[self.r-1][self.c] = self.grid[self.r][self.c]
+							self.grid[self.r][self.c] = 0
+						self.c += 1
+
+					elif direction == 'down':
+						if self.r == 3:
+							break
+						if self.grid[self.r+1][self.c] == 0:
+							self.grid[self.r+1][self.c] = self.grid[self.r][self.c]
+							self.grid[self.r][self.c] = 0
+						self.c += 1
+
+					elif direction == 'left':
+						if self.r == 4:
+							break
+						if self.c > 0:
+							if self.grid[self.r][self.c-1] == 0:
+								self.grid[self.r][self.c-1] = self.grid[self.r][self.c]
+								self.grid[self.r][self.c] = 0
+						self.c -= 1
+
+					elif direction == 'right':
+						if self.r == 4:
+							break
+						if self.c < 3:
+							if self.grid[self.r][self.c+1] == 0:
+								self.grid[self.r][self.c+1] = self.grid[self.r][self.c]
+								self.grid[self.r][self.c] = 0
+						self.c += 1
+
+				if direction == 'up': 
+					self.r -= 1 
+					self.c = 0
+				elif direction == 'down':
+					self.r += 1
+					self.c = 0
+				elif direction == 'left':
+					self.r += 1
+					self.c = 3
+				elif direction == 'right':
+					self.r += 1
+					self.c = 0
+
+	# Merge in a direction
+	def merge(self, direction):
+		self.direction = direction
+
+		if direction == 'up':
+			self.r = 0
+			self.c = 0
+		elif direction == 'down':
 			self.r = 3
 			self.c = 0
-			for row in self.grid:
-				for cell in self.grid[self.r]:
-					if self.r == 0:
-						break
-					if self.grid[self.r-1][self.c] == 0:
-						self.grid[self.r-1][self.c] = self.grid[self.r][self.c]
-						self.grid[self.r][self.c] = 0
-					self.c += 1
-				self.r -= 1
-				self.c = 0
-				
-	# Down movement
-	def down(self):
-		
-		for i in range(1, 4):
+		elif direction == 'left':
 			self.r = 0
 			self.c = 0
-			for row in self.grid:
-				for cell in self.grid[self.r]:
-					if self.r == 3:
-						break
-					if self.grid[self.r+1][self.c] == 0:
-						self.grid[self.r+1][self.c] = self.grid[self.r][self.c]
-						self.grid[self.r][self.c] = 0
-					self.c += 1
-				self.r += 1
-				self.c = 0
-
-	# Left movement
-	def left(self):
-		
-		for i in range(1, 4):
+		elif direction == 'right':
 			self.r = 0
 			self.c = 3
-			for row in self.grid:
-				for cell in self.grid[self.r]:
-					if self.r == 4:
-						break
-					if self.c > 0:
-						if self.grid[self.r][self.c-1] == 0:
-							self.grid[self.r][self.c-1] = self.grid[self.r][self.c]
-							self.grid[self.r][self.c] = 0
-					self.c -= 1
-				self.r += 1
-				self.c = 3
 
-	# Right movement
-	def right(self):
-		
-		for i in range(1, 4):
-			self.r = 0
-			self.c = 0
-			for row in self.grid:
-				for cell in self.grid[self.r]:
+		for row in self.grid:
+			for cell in self.grid[self.r]:
+				
+				if direction == 'up':
+					if self.r == 3:
+						break
+					if self.grid[self.r+1][self.c] == self.grid[self.r][self.c]:
+						self.grid[self.r+1][self.c] = self.grid[self.r+1][self.c] * 2
+						self.grid[self.r][self.c] = 0
+					self.c += 1
+
+				elif direction == 'down':
+					if self.r == 0:
+						break
+					if self.grid[self.r-1][self.c] == self.grid[self.r][self.c]:
+						self.grid[self.r][self.c] = self.grid[self.r][self.c] * 2
+						self.grid[self.r-1][self.c] = 0 
+					self.c += 1
+
+				elif direction == 'left':
 					if self.r == 4:
 						break
-					if self.c < 3:
-						if self.grid[self.r][self.c+1] == 0:
-							self.grid[self.r][self.c+1] = self.grid[self.r][self.c]
+					if self.c >= 1:
+						if self.grid[self.r][self.c-1] == self.grid[self.r][self.c]:
+							self.grid[self.r][self.c-1] = self.grid[self.r][self.c-1] * 2
 							self.grid[self.r][self.c] = 0
 					self.c += 1
+
+				elif direction == 'right':
+					if self.r == 4:
+						break
+					if self.c <= 2:
+						if self.grid[self.r][self.c+1] == self.grid[self.r][self.c]:
+							self.grid[self.r][self.c+1] = self.grid[self.r][self.c+1] * 2
+							self.grid[self.r][self.c] = 0
+					self.c -= 1
+
+			if direction == 'up':
 				self.r += 1
 				self.c = 0
-
-	# Merging up
-	def merge_up(self):
-
-		self.r = 0
-		self.c = 0
-
-		for row in self.grid:
-			for cell in self.grid[self.r]:
-				if self.r == 3:
-					break
-				if self.grid[self.r+1][self.c] == self.grid[self.r][self.c]:
-					self.grid[self.r+1][self.c] = self.grid[self.r+1][self.c] * 2
-					self.grid[self.r][self.c] = 0
-				self.c += 1
-			self.r += 1
-			self.c = 0
-
-	# Merging down
-	def merge_down(self):
-
-		self.r = 3
-		self.c = 0
-
-		for row in self.grid:
-			for cell in self.grid[self.r]:
-				if self.r == 0:
-					break
-				if self.grid[self.r-1][self.c] == self.grid[self.r][self.c]:
-					self.grid[self.r][self.c] = self.grid[self.r][self.c] * 2
-					self.grid[self.r-1][self.c] = 0 
-				self.c += 1
-			self.r -= 1
-			self.c = 0
-
-	# Merging left
-	def merge_left(self):
-
-		self.r = 0
-		self.c = 0
-
-		for row in self.grid:
-			for cell in self.grid[self.r]:
-				if self.r == 4:
-					break
-				if self.c >= 1:
-					if self.grid[self.r][self.c-1] == self.grid[self.r][self.c]:
-						self.grid[self.r][self.c-1] = self.grid[self.r][self.c-1] * 2
-						self.grid[self.r][self.c] = 0
-				self.c += 1
-			self.r += 1
-			self.c = 0
-
-	# Merging right
-	def merge_right(self):
-
-		self.r = 0
-		self.c = 3
-
-		for row in self.grid:
-			for cell in self.grid[self.r]:
-				if self.r == 4:
-					break
-				if self.c <= 2:
-					if self.grid[self.r][self.c+1] == self.grid[self.r][self.c]:
-						self.grid[self.r][self.c+1] = self.grid[self.r][self.c+1] * 2
-						self.grid[self.r][self.c] = 0
-				self.c -= 1
-			self.r += 1
-			self.c = 0
+			elif direction == 'down':
+				self.r -= 1
+				self.c = 0
+			elif direction == 'left':
+				self.r += 1
+				self.c = 0
+			elif direction == 'right':
+				self.r += 1
+				self.c = 0

@@ -3,10 +3,14 @@
 By JustJeeCode, 6/4/23.
 """
 
+import platform
 import os
 from board import Board
 
-clear = 'clear' # If running a windows change this variable to 'cls'
+# Getting os
+user_os = platform.system()
+if user_os == 'Windows': clear = 'cls'
+else: clear = 'clear'
 
 # Starting lines
 os.system(clear)
@@ -28,21 +32,21 @@ while True:
 
 		# Board movement
 		if player_inp == 'w':
-			board.up()
-			board.merge_up()
-			board.up()
+			board.move('up')
+			board.merge('up')
+			board.move('up')
 		elif player_inp == 's':
-			board.down()
-			board.merge_down()
-			board.down()
+			board.move('down')
+			board.merge('down')
+			board.move('down')
 		elif player_inp == 'a':
-			board.left()
-			board.merge_left()
-			board.left()
+			board.move('left')
+			board.merge('left')
+			board.move('left')
 		elif player_inp == 'd':
-			board.right()
-			board.merge_right()
-			board.right()
+			board.move('right')
+			board.merge('right')
+			board.move('right')
 		else:
 			break
 	else:
